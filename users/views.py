@@ -1,7 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from .models import Profile
+from . import views
 
 # Create your views here.
 
@@ -16,7 +18,7 @@ def login_user(request):
 
         if user:
             login(request, user)
-            return HttpResponse('Usuário autenticado com sucesso!')
+            return redirect('dashboard')
         else:
             return HttpResponse('Email ou senha inválido!')
 
@@ -30,11 +32,16 @@ def register(request):
         password = request.POST.get('password')
         email = request.POST.get('email')
         
-        # return HttpResponse(username)
         user = User.objects.filter(username = username).first()
         if user:
             return HttpResponse('Já existe um usuário com esse Email!')
         
         user = User.objects.create_user(username, email, password)
         user.save()
-        return HttpResponse("Usu´ario criado com sucesso!")
+
+        # Cria e inicializa o perfil do usuário
+        profile = Profile.objects.create(user=user)
+        profile.stocks_check_period = 5  # Por exemplo, definir um período de verificação padrão
+        profile.save()
+        return redirect('login')
+        return HttpResponse("Usuário criado com sucesso!")

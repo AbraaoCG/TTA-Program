@@ -1,0 +1,111 @@
+.main-aplication-2,
+.main-aplication-2 * {
+  box-sizing: border-box;
+}
+.main-aplication-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  height: 1080px;
+  position: relative;
+}
+.upper-header {
+  background: rgba(50, 47, 47, 0.8);
+  padding: 14px 38px 14px 38px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex-shrink: 0;
+  position: relative;
+  overflow: hidden;
+}
+.logo-box {
+  display: flex;
+  flex-direction: row;
+  gap: 3px;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  position: relative;
+}
+.retangles-logo {
+  padding: 5px 0px 0px 0px;
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.rectangle-4 {
+  background: #d9d9d9;
+  flex-shrink: 0;
+  width: 9.45px;
+  height: 29.07px;
+  position: relative;
+}
+.rectangle-5 {
+  background: #d9d9d9;
+  flex-shrink: 0;
+  width: 9.45px;
+  height: 18.5px;
+  position: relative;
+}
+.frame-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  position: relative;
+}
+.tta {
+  color: #f5f5f5;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  position: relative;
+  width: 60.77px;
+  height: 23.79px;
+}
+.tta-description {
+  color: #ffffff;
+  text-align: left;
+  font-family: "Inter-Bold", sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  position: relative;
+  width: 135.04px;
+  height: 13.21px;
+}
+.website-body {
+  background: #d9d9d9;
+  display: flex;
+  flex-direction: row;
+  gap: 0px;
+  align-items: center;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex: 1;
+  position: relative;
+}
+.side-tabs-result {
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-self: stretch;
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}

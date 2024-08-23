@@ -1,17 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    {% block 'head' %}{% endblock %}
-    <title>{% block 'titulo' %}{% endblock %}</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/vars.css' %}">
+  {% load static %}
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
+  {% block 'head' %}{% endblock %}
+
+  <style>
+   a,
+   button,
+   input,
+   select,
+   h1,
+   h2,
+   h3,
+   h4,
+   h5,
+   * {
+       box-sizing: border-box;
+       margin: 0;
+       padding: 0;
+       border: none;
+       text-decoration: none;
+       background: none;
+   
+       -webkit-font-smoothing: antialiased;
+   }
+   
+   menu, ol, ul {
+       list-style-type: none;
+       margin: 0;
+       padding: 0;
+   }
+   </style>
+
+    <title>{% block 'titulo' %}{% endblock %}</title>
 
 </head>
 <body>
-    {% block 'body' %}{% endblock %}
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <div class="main-aplication-2">
+    <div class="upper-header">
+      <div class="logo-box">
+        <div class="retangles-logo">
+          <div class="rectangle-4"></div>
+          <div class="rectangle-5"></div>
+        </div>
+        <div class="frame-2">
+          <div class="tta">TTA</div>
+          <div class="tta-description">Trade Tunneling Alert</div>
+        </div>
+      </div>
+    </div>
+    <div class="website-body">
+      <div class="side-tabs-result">
+        {% block 'body' %}{% endblock %}
+      </div>
+    </div>
+  </div>
+  
 </body>
 </html>
