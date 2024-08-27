@@ -44,4 +44,3 @@ def register(request):
         profile.stocks_check_period = 5  # Por exemplo, definir um período de verificação padrão
         profile.save()
         return redirect('login')
-        return HttpResponse("Usuário criado com sucesso!")
