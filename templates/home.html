@@ -1,2 +1,67 @@
 {% extends 'base.html' %}
 
+{% block 'head' %}
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/style_dashb.css' %}">
+{% load static %}
+<script src="searchScript.js" defer></script> <!-- Inclua seu arquivo JS -->
+{% endblock %}
+
+{% block 'body' %}
+<div class="dashboard-container">
+    <!-- Blocos alinhados lado a lado -->
+    <div class="box-container">
+        <div class="box box-40">
+            <h2>Search Currency</h2>
+            <div class="search-container">
+                <div class="search-input">
+                    <input type="text" id="search" name="search" placeholder="Search for a symbol..." onkeyup="fetchSuggestions()">
+                    <span class="search-icon">&#128269;</span> <!-- Unicode para a lupa -->
+                </div>
+                <ul id="suggestions" class="suggestions-list"></ul>
+            </div>        
+        </div>
+        <div class="box box-30">
+            <h2>Tunnel Limits</h2>
+            <div class="input-container">
+                <div class="inputs-box">
+                    <div class="input-group">
+                        <label for="upper">Upper:</label>
+                        <input type="text" id="upper" name="upper">
+                    </div>
+                    <div class="input-group">
+                        <label for="bottom">Bottom:</label>
+                        <input type="text" id="bottom" name="bottom">
+                    </div>
+                </div>
+                <div class="button-box">
+                    <button class="set-button">Set</button>
+                </div>
+            </div>
+        </div>
+        <div class="box box-30">
+            <h2>Profile</h2>
+            <div class="fixed-field username-field">
+                <label for="username">Username:</label>
+                <p id="username" class="username-text">user123</p>
+            </div>
+                      
+            <div class="fixed-field">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="user@example.com">
+                <button class="edit-button">✎</button>
+            </div>
+            <div class="fixed-field">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" value="password123">
+                <button class="edit-button">✎</button>
+            </div>
+        </div>
+    </div>
+    <!-- Bloco para o gráfico, ocupando toda a largura -->
+    <div class="box full-width">
+        <h2>Graph</h2>
+        <!-- Adicione o gráfico ou conteúdo relevante aqui -->
+    </div>
+</div>
+{% endblock %}

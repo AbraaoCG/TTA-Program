@@ -1,0 +1,212 @@
+body {
+    background-color: #d9d9d9;
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    width: 100vw; /* Garante que a largura ocupe toda a tela */
+}
+
+.box-container {
+    display: flex;
+    gap: 20px; /* Espaço entre os blocos */
+    padding: 20px;
+}
+
+.box {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(45deg, #f3f3f3, #e0e0e0);
+    background-size: 200% 200%;
+    animation: backgroundMovement 8s ease infinite;
+}
+
+.box.full-width {
+    width: 100%;
+    padding: 20px;
+}
+
+.box-40 {
+    flex: 40%;
+}
+
+.box-30 {
+    flex: 30%;
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    width: 100%;
+}
+
+.search-input input[type="text"] {
+    border: none;
+    padding: 10px;
+    width: calc(100% - 30px); /* Deixa espaço para o ícone */
+    border-radius: 8px;
+    outline: none;
+}
+
+.search-input .search-icon {
+    font-size: 18px;
+    color: #888;
+}
+
+.suggestions-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.suggestions-list li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.suggestions-list li:hover {
+    background-color: #f0f0f0;
+}
+
+
+
+.input-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.inputs-box {
+    flex: 1;
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.input-group input[type="text"] {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%; /* Preenche o espaço disponível */
+}
+
+.button-box {
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centraliza o botão verticalmente */
+    width: 100px; /* Largura da caixa do botão */
+}
+
+.set-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #556d86;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.set-button:hover {
+    background-color: #435d73;
+    transform: scale(1.05);
+}
+
+.username-field {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+    padding: 10px; /* Padding para destacar o campo */
+    border-radius: 8px; /* Bordas arredondadas */
+}
+
+.username-field label {
+    width: 120px; /* Largura específica para o rótulo */
+}
+
+.username-text {
+    flex: 1;
+    padding: 10px;
+    border: none; /* Remove a borda */
+    background-color: transparent; /* Remove a cor de fundo */
+    cursor: not-allowed; /* Indica que o texto é somente leitura */
+}
+
+
+
+
+.fixed-field {
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.fixed-field label {
+    width: 100px;
+}
+
+.fixed-field input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+
+.edit-button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 18px;
+    color: #556d86;
+}
+
+.edit-button:hover {
+    color: #435d73;
+}
+
+@keyframes backgroundMovement {
+    0% {
+        background-position: 0% 0%;
+        filter: brightness(1);
+    }
+    50% {
+        background-position: 100% 100%;
+        filter: brightness(1.1);
+    }
+    100% {
+        background-position: 0% 0%;
+        filter: brightness(1);
+    }
+}
