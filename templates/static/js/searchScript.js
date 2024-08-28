@@ -5,7 +5,7 @@ async function fetchSuggestions() {
         return;
     }
 
-    const response = await fetch(`/api/suggestions/?query=${query}`);
+    const response = await fetch(`api/suggestions/?query=${query}`);
     const suggestions = await response.json();
 
     const suggestionsList = document.getElementById('suggestions');

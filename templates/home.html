@@ -2,9 +2,9 @@
 
 {% block 'head' %}
 {% load static %}
-<link rel="stylesheet" href="{% static 'css/style_dashb.css' %}">
+<link rel="stylesheet" href="{% static 'css/style_dashb.css' %}"></link> <!-- Adiciona o estilo da página -->
 {% load static %}
-<script src="searchScript.js" defer></script> <!-- Inclua seu arquivo JS -->
+<script src="{% static 'js/searchScript.js' %}" defer></script> <!-- Adiciona o script de busca -->
 {% endblock %}
 
 {% block 'body' %}
@@ -19,9 +19,8 @@
                     <span class="search-icon">&#128269;</span> <!-- Unicode para a lupa -->
                 </div>
                 <ul id="suggestions" class="suggestions-list"></ul>
-            </div>        
-        </div>
-        <div class="box box-30">
+            </div>
+            
             <h2>Tunnel Limits</h2>
             <div class="input-container">
                 <div class="inputs-box">
@@ -37,9 +36,12 @@
                 <div class="button-box">
                     <button class="set-button">Set</button>
                 </div>
-            </div>
+            </div>        
         </div>
         <div class="box box-30">
+            
+        </div>
+        <div class="box box-50">
             <h2>Profile</h2>
             <div class="fixed-field username-field">
                 <label for="username">Username:</label>
