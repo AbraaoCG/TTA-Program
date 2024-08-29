@@ -5,6 +5,9 @@
 <link rel="stylesheet" href="{% static 'css/style_dashb.css' %}"></link> <!-- Adiciona o estilo da página -->
 {% load static %}
 <script src="{% static 'js/searchScript.js' %}" defer></script> <!-- Adiciona o script de busca -->
+{% load static %}
+<script src="{% static 'js/aux.js' %}" defer></script> <!-- Adiciona o script auxiliar -->
+
 {% endblock %}
 
 {% block 'body' %}
@@ -45,19 +48,32 @@
             <h2>Profile</h2>
             <div class="fixed-field username-field">
                 <label for="username">Username:</label>
-                <p id="username" class="username-text">user123</p>
+                <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
             </div>
-                      
+            <!-- Campo de exibição e edição do Email-->>
             <div class="fixed-field">
                 <label for="email">Email:</label>
-                <input type="email" id="email" name="email" value="user@example.com">
-                <button class="edit-button">✎</button>
+                <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
+                <button type="button" class="edit-button" onclick="toggleEdit('email')">
+                    <span id="email-icon">✎</span>
+                </button>
             </div>
+            <!-- Campo de exibição e edição da senha-->>
             <div class="fixed-field">
                 <label for="password">Password:</label>
-                <input type="password" id="password" name="password" value="password123">
-                <button class="edit-button">✎</button>
+                <input type="password" id="password" name="password" value="******" readonly>
+                <button type="button" class="edit-button" onclick="toggleEdit('password')">
+                    <span id="password-icon">✎</span>
+                </button>
             </div>
+            <!-- Campo de exibição e edição do período de monitoramento-->>
+            <div class="fixed-field">
+                <label for="monitoringPeriod">Monitoring Period:</label>
+                <input type="number" id="monitoringPeriod" name="monitoringPeriod" value="{{ profile.monitoringPeriod }}" readonly>
+                <button type="button" class="edit-button" onclick="toggleEdit('monitoringPeriod')">
+                    <span id="monitoringPeriod-icon">✎</span>
+                </button>
+            </div>       
         </div>
     </div>
     <!-- Bloco para o gráfico, ocupando toda a largura -->

@@ -8,7 +8,7 @@ class Profile(models.Model):
     # Cada user tem uma classe Profile associada. Um para um.
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     # A implementação define que um usuário tem um tempo fixo de verificação do valor de todas as ações, em minutos.
-    stocksCheckPeriod = models.PositiveIntegerField(default=5)
+    monitoring_period = models.PositiveIntegerField(default=5)
 
 class StockMonitor(models.Model):
     # Cada monitor de ação armazena nome, símbolo, último valor, data do último valor, limite superior e limite inferior.

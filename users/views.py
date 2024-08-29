@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from .models import Profile
-from . import views
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # Create your views here.
 
@@ -17,14 +18,14 @@ def login_user(request):
         user = authenticate(username = username, password=password)
 
         if user:
-            login(request, user)
+            login(request = request, user = user)
             return redirect('dashboard')
         else:
             return HttpResponse('Email ou senha inválido!')
 
 
     #return render(request, 'login.html')
-def register(request):
+def register_user(request):
     if request.method == "GET":
         return render(request, 'register.html')
     else:
@@ -41,6 +42,41 @@ def register(request):
 
         # Cria e inicializa o perfil do usuário
         profile = Profile.objects.create(user=user)
-        profile.stocks_check_period = 5  # Por exemplo, definir um período de verificação padrão
+        profile.monitoring_period = 5  # Por exemplo, definir um período de verificação padrão
         profile.save()
         return redirect('login')
+
+
+@csrf_exempt
+def update_email(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        email = data.get('value')
+        request.user.email = email
+        request.user.save()
+        return JsonResponse({'success': True})
+
+@csrf_exempt
+def update_password(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        password = data.get('value')
+        username = request.user.username
+        request.user.set_password(password)
+        request.user.save()
+        user = authenticate(username = username, password=password)
+        if user:
+            login(request = request, user = user)
+        else:
+            return redirect('login')
+        return JsonResponse({'success': True})
+
+@csrf_exempt
+def update_monitoring_period(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        monitoring_period = data.get('value')
+        profile = Profile.objects.get(user=request.user)
+        profile.monitoring_period = monitoring_period
+        profile.save()
+        return JsonResponse({'success': True})
