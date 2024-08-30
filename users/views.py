@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse,JsonResponse
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login,logout
+from django.contrib.auth.views import LogoutView
 from .models import Profile
 from django.views.decorators.csrf import csrf_exempt
 import json
@@ -16,9 +17,10 @@ def login_user(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username = username, password=password)
-
         if user:
             login(request = request, user = user)
+            user_id = request.user.id
+            request.session['user_id'] = request.user.id
             return redirect('dashboard')
         else:
             return HttpResponse('Email ou senha inválido!')
@@ -45,6 +47,13 @@ def register_user(request):
         profile.monitoring_period = 5  # Por exemplo, definir um período de verificação padrão
         profile.save()
         return redirect('login')
+
+def logout_user(request):
+    # Reseta a sessão
+    request.session.flush()  
+    # Faz logout do usuário
+    logout(request)
+    return redirect('login')
 
 
 @csrf_exempt

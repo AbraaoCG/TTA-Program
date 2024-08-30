@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 <div class="button-box">
-                    <button class="set-button">Set</button>
+                    <button class="set-button" type="submit">Set</button>
                 </div>
             </div>        
         </div>
@@ -45,12 +45,15 @@
             
         </div>
         <div class="box box-50">
-            <h2>Profile</h2>
-            <div class="fixed-field username-field">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+            <!-- Campo 'PROFILE' e Logout-->
+            <div class="profile_logout_box">
+                <h2>Profile</h2>
+                <form action="{% url 'logout' %}" method="post" >
+                    {% csrf_token %}
+                    <button class="logout-button" type="submit" >Logout</button>
+                </form>
             </div>
-            <!-- Campo de exibição e edição do Email-->>
+            <!-- Campo de exibição e edição do Email-->
             <div class="fixed-field">
                 <label for="email">Email:</label>
                 <input type="email" id="email" name="email" value="{{ user.email }}" readonly>
@@ -58,7 +61,7 @@
                     <span id="email-icon">✎</span>
                 </button>
             </div>
-            <!-- Campo de exibição e edição da senha-->>
+            <!-- Campo de exibição e edição da senha-->
             <div class="fixed-field">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" value="******" readonly>
@@ -66,10 +69,10 @@
                     <span id="password-icon">✎</span>
                 </button>
             </div>
-            <!-- Campo de exibição e edição do período de monitoramento-->>
+            <!-- Campo de exibição e edição do período de monitoramento-->
             <div class="fixed-field">
                 <label for="monitoringPeriod">Monitoring Period:</label>
-                <input type="number" id="monitoringPeriod" name="monitoringPeriod" value="{{ profile.monitoringPeriod }}" readonly>
+                <input type="number" id="monitoringPeriod" name="monitoringPeriod" value="{{ profile.monitoring_period }}" readonly>
                 <button type="button" class="edit-button" onclick="toggleEdit('monitoringPeriod')">
                     <span id="monitoringPeriod-icon">✎</span>
                 </button>

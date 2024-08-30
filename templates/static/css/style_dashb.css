@@ -1,3 +1,4 @@
+
 body {
     background-color: #d9d9d9;
     margin: 0;
@@ -46,6 +47,13 @@ body {
 
 .box-30 .input-group {
     margin-bottom: 20px; /* Aumenta o espaçamento vertical entre os elementos */
+}
+
+.profile_logout_box{
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center;
+    margin-bottom: 3%;
 }
 
 .search-container {
@@ -136,7 +144,23 @@ body {
     width: 100px; /* Largura da caixa do botão */
 }
 
-.set-button {
+.logout-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #556d86; /* Cor de fundo */
+    color: white;              /* Cor do texto */
+    cursor: pointer;           /* Cursor ao passar sobre o botão */
+    font-size: 16px;           /* Tamanho da fonte */
+    transition: background-color 0.3s, transform 0.3s; /* Transição suave */
+}
+
+.logout-button:hover {
+    background-color: #435d73; /* Cor de fundo ao passar o mouse */
+    transform: scale(1.05);    /* Leve aumento ao passar o mouse */
+}
+
+.set-button{
     padding: 10px 20px;
     border: none;
     border-radius: 8px;

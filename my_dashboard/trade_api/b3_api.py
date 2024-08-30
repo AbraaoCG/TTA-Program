@@ -21,5 +21,3 @@ def get_last_records(ticker, num_records, minutes_interval):
 stock = yf.Ticker("ABEV3.SA")
 price = stock.info['regularMarketPrice']
 print(price)
-
-print(data)
