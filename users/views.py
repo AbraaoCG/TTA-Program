@@ -48,6 +48,7 @@ def register_user(request):
         profile.save()
         return redirect('login')
 
+
 def logout_user(request):
     # Reseta a sessão
     request.session.flush()  
@@ -89,3 +90,5 @@ def update_monitoring_period(request):
         profile.monitoring_period = monitoring_period
         profile.save()
         return JsonResponse({'success': True})
+    
+

@@ -7,7 +7,8 @@
 <script src="{% static 'js/searchScript.js' %}" defer></script> <!-- Adiciona o script de busca -->
 {% load static %}
 <script src="{% static 'js/aux.js' %}" defer></script> <!-- Adiciona o script auxiliar -->
-
+{% load static %} <!-- Adiciona o script do Plotly -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 {% endblock %}
 
 {% block 'body' %}
@@ -25,21 +26,25 @@
             </div>
             
             <h2>Tunnel Limits</h2>
-            <div class="input-container">
-                <div class="inputs-box">
-                    <div class="input-group">
-                        <label for="upper">Upper:</label>
-                        <input type="text" id="upper" name="upper">
+            <form action="{% url 'setMonitor' %}" method="post" >
+                <div class="input-container">
+                    <div class="inputs-box">
+                        <div class="input-group">
+                            <label for="upper">Upper:</label>
+                            <input type="text" id="upper" name="upper" required>
+                        </div>
+                        <div class="input-group">
+                            <label for="bottom">Bottom:</label>
+                            <input type="text" id="bottom" name="bottom" required>
+                        </div>
                     </div>
-                    <div class="input-group">
-                        <label for="bottom">Bottom:</label>
-                        <input type="text" id="bottom" name="bottom">
+                    <div class="button-box">
+                        {% csrf_token %}
+                        <button class="set-button" type="submit">Set</button>
                     </div>
                 </div>
-                <div class="button-box">
-                    <button class="set-button" type="submit">Set</button>
-                </div>
-            </div>        
+            </form>
+    
         </div>
         <div class="box box-30">
             
@@ -82,7 +87,8 @@
     <!-- Bloco para o gráfico, ocupando toda a largura -->
     <div class="box full-width">
         <h2>Graph</h2>
-        <!-- Adicione o gráfico ou conteúdo relevante aqui -->
+        <!-- Container para o gráfico -->
+        <div id="graph-container"></div> 
     </div>
 </div>
 {% endblock %}

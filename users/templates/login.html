@@ -18,5 +18,9 @@
         
         <input type="submit" value="Entrar">
     </form>
+    <form action="{% url 'register' %}" method="GET" >
+        {% csrf_token %}
+        <button id = "register_redirect" type = "submit" >Registrar-se</button>
+    </form>
 </div>
 {% endblock %}

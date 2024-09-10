@@ -81,3 +81,15 @@ function saveChanges(field, value) {
         }
     });
 }
+
+// Event LIstener para adicionar gráfico na página
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/dashboard/get-graph/')
+        .then(response => response.json())
+        .then(data => {
+            const graphElement = document.getElementById('graph-container');
+            if (data.graph) {
+                Plotly.react(graphElement, JSON.parse(data.graph), {});
+            }
+        });
+});

@@ -12,9 +12,8 @@ class Profile(models.Model):
 
 class StockMonitor(models.Model):
     # Cada monitor de ação armazena nome, símbolo, último valor, data do último valor, limite superior e limite inferior.
-    name = models.CharField(max_length=55)
-    symbol = models.CharField(max_length=5)
-    lastValue = models.FloatField()
+    name = models.CharField(max_length=30)
+    symbol = models.CharField(max_length=10)
     datelastValue = models.DateTimeField(default = datetime.datetime.now)
     supLimit = models.FloatField()
     botLimit = models.FloatField()
