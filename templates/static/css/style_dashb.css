@@ -43,6 +43,7 @@ body {
 .box-30 {
     flex: 50%; /* Reduz o tamanho relativo horizontal */
     padding: 20px; /* Espaçamento interno da caixa */
+    width: 40%;
 }
 
 .box-30 .input-group {
@@ -228,6 +229,98 @@ body {
 .edit-button:hover {
     color: #435d73;
 }
+
+
+/* Estilo da lista de StockMonitor */
+.stock-monitor-container {
+    display: flex;
+    flex-wrap: nowrap;           /* Não quebra a linha */
+    overflow-x: auto;            /* Rolagem horizontal */
+    padding: 10px;
+    gap: 20px;                   /* Espaçamento entre os blocos */
+    /* background-color: rgba(0, 0, 0, 0.1);  Fundo ligeiramente escuro */
+    border-radius: 10px;
+}
+
+/* Estilo de cada bloco de StockMonitor */
+.stock-monitor-block {
+    min-width: 200px;            /* Largura mínima para cada bloco */
+    height: 100px;               /* Altura dos blocos */
+    background-color:rgba(0, 0, 0, 0.1);   /* Fundo cinza escuro */
+    border-radius: 10px;         /* Bordas arredondadas */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+    flex: 0 0 auto;              /* Mantém o tamanho fixo dos blocos */
+}
+
+/* Estilo para os campos de entrada */
+.monitor-info input[readonly] {
+    background-color: transparent;
+    border: none;
+    color: rgba(0, 0, 0, 0.7);
+}
+
+/* Estilo para os ícones de edição e exclusão */
+.edit-icon, .delete-icon {
+    cursor: pointer;
+    font-size: 20px;
+    margin: 5px;
+}
+
+
+/* Estilo do container principal dos blocos de monitor */
+.stock-monitor-block {
+    display: flex;
+    flex-direction: column;  /* Disposição vertical do conteúdo */
+    padding: 10px;
+    background-color: rgba(0, 0, 0, 0.1); /* Fundo cinza escuro */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
+    gap: 10px; /* Espaçamento entre elementos internos */
+}
+
+/* Estilo do container das informações */
+.monitor-info {
+    display: flex;  /* Alinha info-left e info-right lado a lado */
+    gap: 20px;      /* Espaçamento entre info-left e info-right */
+}
+
+/* Estilo das informações à esquerda */
+.info-left {
+    display: flex;
+    flex-direction: column; /* Disposição vertical dos itens */
+    gap: 2%; /* Espaçamento entre os itens */
+}
+
+/* Estilo das informações à direita */
+.info-right {
+    
+    display: flex;
+    flex-direction: column; /* Disposição vertical dos itens */
+    gap: 2%; /* Espaçamento entre os itens */
+}
+
+/* Estilo dos ícones de edição e exclusão */
+.edit-icon, .delete-icon {
+    cursor: pointer;
+    font-size: 18px; /* Tamanho dos ícones */
+}
+
+/* Estilo dos inputs dentro dos blocos de monitor */
+.stock-monitor-block input {
+    width: 80px;            /* Largura fixa dos inputs, ajuste conforme necessário */
+    height: 30px;           /* Altura dos inputs, ajuste conforme necessário */
+    font-size: 16px;        /* Tamanho da fonte do texto dentro do input */
+    font: #000000;         /* Cor do texto dos inputs */
+    border: 1px solid #ccc; /* Cor da borda dos inputs */
+    border-radius: 5px;    /* Bordas arredondadas */
+    padding: 5px;          /* Espaçamento interno dos inputs */
+}
+
+/* Estilo dos labels dentro dos blocos de monitor */
+.stock-monitor-block label {
+    font-size: 16px; /* Tamanho da fonte dos labels, ajuste conforme necessário */
+}
+
 
 @keyframes backgroundMovement {
     0% {

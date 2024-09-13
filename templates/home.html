@@ -7,6 +7,9 @@
 <script src="{% static 'js/searchScript.js' %}" defer></script> <!-- Adiciona o script de busca -->
 {% load static %}
 <script src="{% static 'js/aux.js' %}" defer></script> <!-- Adiciona o script auxiliar -->
+{% load static %}
+<script src="{% static 'js/monitors.js' %}" defer></script> <!-- Adiciona o script para atualização de monitores. -->
+
 {% load static %} <!-- Adiciona o script do Plotly -->
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 {% endblock %}
@@ -15,6 +18,7 @@
 <div class="dashboard-container">
     <!-- Blocos alinhados lado a lado -->
     <div class="box-container">
+        <!-- Bloco de busca de ação e criação de monitors.-->
         <div class="box box-40">
             <h2>Search Currency</h2>
             <div class="search-container">
@@ -26,28 +30,48 @@
             </div>
             
             <h2>Tunnel Limits</h2>
-            <form action="{% url 'setMonitor' %}" method="post" >
-                <div class="input-container">
-                    <div class="inputs-box">
-                        <div class="input-group">
-                            <label for="upper">Upper:</label>
-                            <input type="text" id="upper" name="upper" required>
-                        </div>
-                        <div class="input-group">
-                            <label for="bottom">Bottom:</label>
-                            <input type="text" id="bottom" name="bottom" required>
-                        </div>
+            <div class="input-container">
+                <div class="inputs-box">
+                    <div class="input-group">
+                        <label for="upper">Upper:</label>
+                        <input type="text" id="upper" name="upper" required>
                     </div>
-                    <div class="button-box">
-                        {% csrf_token %}
-                        <button class="set-button" type="submit">Set</button>
+                    <div class="input-group">
+                        <label for="bottom">Bottom:</label>
+                        <input type="text" id="bottom" name="bottom" required>
                     </div>
                 </div>
-            </form>
-    
+                <div class="button-box">
+                    <button class="set-button" type="button" onclick="submitMonitor()">Set</button>
+                </div>
+            </div>
+                
         </div>
         <div class="box box-30">
-            
+            <h2>My Alerts</h2>
+            <div class="stock-monitor-container">
+                {% for stock in stock_monitors %}
+                <div class="stock-monitor-block">
+                    <h3>{{ stock.symbol }}</h3>
+                    <div class="monitor-info">
+                        <div class="info-left">
+                            <div>
+                                <label for="upper-{{ stock.symbol }}">Upper:</label>
+                                <input type="text" id="upper-{{ stock.symbol }}" value="{{ stock.supLimit }}" readonly>
+                            </div>
+                            <div>
+                                <label for="bottom-{{ stock.symbol }}">Bottom:</label>
+                                <input type="text" id="bottom-{{ stock.symbol }}" value="{{ stock.botLimit }}" readonly>
+                            </div>
+                        </div>
+                        <div class="info-right">
+                            <span id="{{ stock.symbol }}-icon" class="edit-icon" onclick="toggleEditMonitor('{{ stock.symbol }}')">✎</span>
+                            <span class="delete-icon" onclick="deleteMonitor('{{ stock.symbol }}')">🗑️</span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
         </div>
         <div class="box box-50">
             <!-- Campo 'PROFILE' e Logout-->

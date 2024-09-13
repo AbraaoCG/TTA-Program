@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'my_dashboard',
     'users',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -126,3 +127,28 @@ STATIC_ROOT = os.path.join('static')
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+
+# Configurações do Celery
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Exemplo com Redis como broker
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_TIMEZONE = 'UTC'
+
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
+
+
+
+from tta_app.password import email_host_password
+# configurações de e-mail
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mail.yahoo.com'  # Substitua pelo endereço do servidor SMTP
+EMAIL_PORT = 587  # Ou 465 para SSL
+EMAIL_USE_TLS = True  # Use TLS para segurança, altere para False se usar SSL
+EMAIL_USE_SSL = False  # Use SSL se necessário
+EMAIL_HOST_USER = 'abraao.cg@yahoo.com'  # Seu e-mail
+EMAIL_HOST_PASSWORD = email_host_password  # Sua senha
+DEFAULT_FROM_EMAIL = 'abraao.cg@yahoo.com'  # E-mail de envio padrão

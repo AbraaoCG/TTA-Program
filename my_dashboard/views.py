@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import StockSymbol  # Importe seu modelo de símbolo de ações
-from users.models import Profile
+from users.models import Profile, StockMonitor  # Importe seu modelo de perfil e monitor de ações
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -15,14 +15,14 @@ import plotly.express as px
 import pandas as pd
 
 from my_dashboard.trade_api.b3_api import get_last_records
-
+import json
 
 @login_required(login_url='/auth/login/')
 def dashboard(request):
-    user_id = request.session.get('user_id')
-    profile = Profile.objects.get(user_id=user_id)
+    profile = request.user.profile # Obter profile do usuário logado
+    stock_monitors = StockMonitor.objects.filter(profile=profile) # Obter lista de monitores do usuário logado
 
-    return render(request, 'home.html', {'profile': profile })
+    return render(request, 'home.html', {'profile': profile , 'stock_monitors': stock_monitors})
 
 
 def dashB_redirect(request):
@@ -94,24 +94,76 @@ def getGraph(data, title):
     return pio.to_json(fig)
 
 
-
+# Função para definir um monitor de ações
 def setMonitor(request):
     if request.method == 'POST':
-        # Obter os dados do POST
-        data = request.POST
+        # Obter dados do POST e do usuário.
+        data = json.loads(request.body)
         ticker = request.session.get('selected_ticker')
-        supLimit = data.get('upper')
-        botLimit = data.get('bottom')
+        # Obter os limites superior e inferior, usando casting para float.  
+        supLimit = float(data.get('upper'))
+        botLimit = float(data.get('bottom'))
         profile = Profile.objects.get(user=request.user)
         
-        # # Verificar se o ticker já está sendo monitorado
-        # if profile.stockmonitor_set.filter(symbol=ticker).exists():
-        #     return JsonResponse({'success': False, 'error': 'Ticker already being monitored'})
+        # Verificar se o ticker já está sendo monitorado
+        if profile.stockmonitor_set.filter(symbol=ticker).exists():
+            return JsonResponse({'success': False, 'error': 'Ticker already being monitored'})
         
         # Criar um novo monitor de ações
         monitor = profile.stockmonitor_set.create(symbol=ticker, supLimit=supLimit, botLimit=botLimit)
         monitor.save()
         
+        # Retornar uma resposta de sucesso
         return JsonResponse({'success': True})
+    
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+# Função para obter monitores de ações do usuário
+def get_stock_monitors(request):
+    profile = request.user.profile
+    stock_monitors = profile.stockmonitor_set.all()
+    
+    monitors_data = [
+        {'symbol': monitor.symbol, 'supLimit': monitor.supLimit, 'botLimit': monitor.botLimit}
+        for monitor in stock_monitors
+    ]
+    
+    return JsonResponse({'stock_monitors': monitors_data})
+
+
+# Função para atualizar um monitor de uma ação.
+def update_monitor(request):
+    if request.method == 'POST':
+        data = request.POST
+        upper_limit = data.get('upper')
+        bottom_limit = data.get('bottom')
+        symbol = data.get('symbol')
+
+        profile = Profile.objects.get(user=request.user)
+        monitor = get_object_or_404(StockMonitor, profile=profile, symbol=symbol)
+        
+        monitor.supLimit = upper_limit
+        monitor.botLimit = bottom_limit
+        monitor.save()
+        
+        return JsonResponse({'success': True})
+    return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+
+
+@login_required(login_url='/auth/login/')
+@csrf_exempt
+def delete_monitor(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        symbol = data.get('symbol')
+        
+        try:
+            profile = Profile.objects.get(user=request.user)
+            monitor = StockMonitor.objects.get(profile=profile, symbol=symbol)
+            monitor.delete()
+            return JsonResponse({'success': True})
+        except StockMonitor.DoesNotExist:
+            return JsonResponse({'success': False, 'error': 'Monitor not found'})
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
