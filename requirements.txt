@@ -1,3 +1,6 @@
 django
-celery redis
+pandas
+celery
+redis
 django-celery-beat
+plotly

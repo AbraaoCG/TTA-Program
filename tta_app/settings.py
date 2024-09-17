@@ -70,14 +70,7 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'tta_app.wsgi.application'
-
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
-DATABASES = {
+tta_appABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
@@ -145,10 +138,20 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 from tta_app.password import email_host_password
 # configurações de e-mail
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.mail.yahoo.com'  # Substitua pelo endereço do servidor SMTP
+EMAIL_HOST = 'smtp.gmail.com'  # Substitua pelo endereço do servidor SMTP
 EMAIL_PORT = 587  # Ou 465 para SSL
 EMAIL_USE_TLS = True  # Use TLS para segurança, altere para False se usar SSL
 EMAIL_USE_SSL = False  # Use SSL se necessário
-EMAIL_HOST_USER = 'abraao.cg@yahoo.com'  # Seu e-mail
+EMAIL_HOST_USER = 'JpAJ234@gmail.com'  # Seu e-mail
 EMAIL_HOST_PASSWORD = email_host_password  # Sua senha
-DEFAULT_FROM_EMAIL = 'abraao.cg@yahoo.com'  # E-mail de envio padrão
+DEFAULT_FROM_EMAIL = 'JpAJ234@gmail.com'  # E-mail de envio padrão
+
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}

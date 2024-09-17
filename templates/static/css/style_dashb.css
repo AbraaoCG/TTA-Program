@@ -204,6 +204,7 @@ body {
     margin-bottom: 15px;
     display: flex;
     align-items: center;
+    height: 20%;
 }
 
 .fixed-field label {
@@ -216,6 +217,11 @@ body {
     border-radius: 8px;
     border: 1px solid #ccc;
     margin-right: 10px;
+}
+
+#username{
+    font-size: larger;
+    font-style: Bold;
 }
 
 .edit-button {

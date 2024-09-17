@@ -37,7 +37,7 @@ def register_user(request):
         
         user = User.objects.filter(username = username).first()
         if user:
-            return HttpResponse('Já existe um usuário com esse Email!')
+            return HttpResponse('Já existe um usuário com esse nome de usuário!')
         
         user = User.objects.create_user(username, email, password)
         user.save()
@@ -81,14 +81,58 @@ def update_password(request):
             return redirect('login')
         return JsonResponse({'success': True})
 
+# @csrf_exempt
+# def update_monitoring_period(request):
+#     if request.method == 'POST':
+#         data = json.loads(request.body)
+#         monitoring_period = data.get('value').split('m')[0]
+#         profile = Profile.objects.get(user=request.user)
+#         profile.monitoring_period = monitoring_period
+#         profile.save()
+#         return JsonResponse({'success': True})
+    
+
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django_celery_beat.models import PeriodicTask, IntervalSchedule
+from users.models import Profile, StockMonitor
+import json
+
 @csrf_exempt
 def update_monitoring_period(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        monitoring_period = data.get('value')
+        monitoring_period = data.get('value').split('m')[0]
+
         profile = Profile.objects.get(user=request.user)
         profile.monitoring_period = monitoring_period
         profile.save()
+        
+        print(f'valor do monitoring_period: {monitoring_period}')
+        # Atualizar o intervalo de todas as tarefas periódicas associadas aos monitores do perfil
+        stock_monitors = StockMonitor.objects.filter(profile=profile)
+        for monitor in stock_monitors:
+            update_periodic_task_for_monitor(monitor)
+        
         return JsonResponse({'success': True})
-    
 
+def update_periodic_task_for_monitor(monitor):
+    print(f"Updating periodic task for {monitor.symbol} and profile {monitor.profile.id}")
+    # Cria ou atualiza o intervalo para o monitor
+    schedule, created = IntervalSchedule.objects.get_or_create(
+        every=monitor.profile.monitoring_period,
+        period=IntervalSchedule.MINUTES
+    )
+    print(f'period: {monitor.profile.monitoring_period}')
+    task_name = f"wake_up_monitor_{monitor.symbol}_{monitor.profile.id}"
+
+    # Remove a tarefa existente se existir
+    PeriodicTask.objects.filter(name=task_name).delete()
+
+    # Cria uma nova tarefa periódica, passando o símbolo e o ID do perfil como argumentos
+    PeriodicTask.objects.create(
+        interval=schedule,
+        name=task_name,
+        task='users.tasks.wake_up_monitor_task',
+        args=json.dumps([monitor.symbol, monitor.profile.id])  # Passa o symbol e o user_id
+    )

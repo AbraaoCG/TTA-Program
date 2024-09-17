@@ -24,10 +24,6 @@ class StockMonitor(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     
-    # historicalData = models.
-    def __str__(self) -> str:
-        return self.ultimoValor
-
 
 class Record(models.Model):
     date = models.DateTimeField(default = datetime.datetime.now)

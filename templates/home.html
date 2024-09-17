@@ -82,6 +82,11 @@
                     <button class="logout-button" type="submit" >Logout</button>
                 </form>
             </div>
+            <!-- Campo Username - fixo -->
+            <div class = "fixed-fixed">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" readonly>
+            </div>
             <!-- Campo de exibição e edição do Email-->
             <div class="fixed-field">
                 <label for="email">Email:</label>
@@ -101,11 +106,19 @@
             <!-- Campo de exibição e edição do período de monitoramento-->
             <div class="fixed-field">
                 <label for="monitoringPeriod">Monitoring Period:</label>
-                <input type="number" id="monitoringPeriod" name="monitoringPeriod" value="{{ profile.monitoring_period }}" readonly>
-                <button type="button" class="edit-button" onclick="toggleEdit('monitoringPeriod')">
+                <select id="monitoringPeriod" name="monitoringPeriod" disabled>
+                    <option value="1m" {% if profile.monitoring_period == '1m' %}selected{% endif %}>1m</option>
+                    <option value="2m" {% if profile.monitoring_period == '2m' %}selected{% endif %}>2m</option>
+                    <option value="5m" {% if profile.monitoring_period == '5m' %}selected{% endif %}>5m</option>
+                    <option value="15m" {% if profile.monitoring_period == '15m' %}selected{% endif %}>15m</option>
+                    <option value="30m" {% if profile.monitoring_period == '30m' %}selected{% endif %}>30m</option>
+                    <option value="60m" {% if profile.monitoring_period == '60m' %}selected{% endif %}>60m</option>
+                    <option value="90m" {% if profile.monitoring_period == '90m' %}selected{% endif %}>90m</option>
+                </select>
+                <button type="button" class="edit-button" onclick="toggleMonitoringPeriodEdit()">
                     <span id="monitoringPeriod-icon">✎</span>
                 </button>
-            </div>       
+            </div>
         </div>
     </div>
     <!-- Bloco para o gráfico, ocupando toda a largura -->

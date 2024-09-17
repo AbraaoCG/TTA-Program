@@ -93,3 +93,61 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
 });
+
+
+
+
+function toggleMonitoringPeriodEdit() {
+    var select = document.getElementById('monitoringPeriod');
+    var icon = document.getElementById('monitoringPeriod-icon');
+
+    if (select.disabled) {
+        select.disabled = false;
+        icon.textContent = '✔';  // Troca para ícone de "certo"
+    } else {
+        // Enviar os dados para o servidor via fetch
+        saveMonitoringPeriodChanges(select.value);
+        
+        select.disabled = true;
+        icon.textContent = '✎';  // Volta para a caneta
+    }
+}
+
+function saveMonitoringPeriodChanges(value) {
+    fetch('/auth/update-monitoring-period/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')  // Inclua o token CSRF se estiver usando Django
+        },
+        body: JSON.stringify({
+            field: 'monitoringPeriod',
+            value: value
+        })
+    })
+    .then(response => {
+        if (response.ok) {
+            console.log('Alteração salva com sucesso.');
+        } else {
+            console.error('Erro ao salvar alteração.');
+        }
+    })
+    .catch(error => {
+        console.error('Erro na requisição:', error);
+    });
+}
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = cookies[i].trim();
+            if (cookie.startsWith(name + '=')) {
+                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
