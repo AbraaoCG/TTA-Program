@@ -2,6 +2,7 @@
 function submitMonitor() {
     const upper = document.getElementById('upper').value;
     const bottom = document.getElementById('bottom').value;
+    var symbol = document.getElementById('search').value;
 
     // Enviar o pedido POST via fetch
     fetch('/dashboard/set-monitor/', {
@@ -12,7 +13,8 @@ function submitMonitor() {
         },
         body: JSON.stringify({
             upper: upper,
-            bottom: bottom
+            bottom: bottom,
+            symbol: symbol
         })
     })
     .then(response => response.json())
@@ -101,14 +103,14 @@ function toggleEditMonitor(symbol) {
 }
 
 function saveMonitorChanges(symbol) {
-    const upperLimit = document.querySelector(`#${symbol}-upper`).value;
-    const bottomLimit = document.querySelector(`#${symbol}-bottom`).value;
+    const upperLimit = document.querySelector(`#upper-${symbol}`).value;
+    const bottomLimit = document.querySelector(`#bottom-${symbol}`).value;
 
-    fetch(`/dashboard/save-monitor-changes/`, {
+    fetch(`/dashboard/update-monitor/`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'X-CSRFToken': '{{ csrf_token }}'
+            'X-CSRFToken': getCookie('csrftoken')
         },
         body: JSON.stringify({ symbol: symbol, upper: upperLimit, bottom: bottomLimit })
     })
@@ -116,7 +118,7 @@ function saveMonitorChanges(symbol) {
     .then(data => {
         if (data.success) {
             // Atualizar a lista de monitores ou exibir uma mensagem de sucesso
-            location.reload(); // Recarregar a página para atualizar a lista
+            reloadStockMonitors() // Recarregar a lista de StockMonitors
         } else {
             alert('Failed to save changes');
         }

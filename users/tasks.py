@@ -13,8 +13,10 @@ def wake_up_monitor_task(symbol, profile_id):
         period = profile.monitoring_period
         monitor = StockMonitor.objects.get(symbol=symbol, profile=profile)
         # Obter último valor da ação com função definida.
-        [latest_value,latest_data] = get_current_price(symbol, num_records= 30, minutes_interval=period)
+        symbol_yf = symbol + '.SA'
+        [latest_value,latest_data] = get_current_price(symbol_yf, num_records= 30, minutes_interval=period)
         # Verificar Tunel.
+        print(f'{symbol} ::: {monitor.supLimit} , {monitor.botLimit} ')
         if latest_value > monitor.supLimit: # Recomendação de venda
             # Enviar email
             send_email_to_user(profile.user.email, symbol, latest_value, monitor.supLimit, False)

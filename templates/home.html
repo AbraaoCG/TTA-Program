@@ -50,23 +50,21 @@
         <div class="box box-30">
             <h2>My Alerts</h2>
             <div class="stock-monitor-container">
-                {% for stock in stock_monitors %}
+                {% for monitor in stock_monitors %}
                 <div class="stock-monitor-block">
-                    <h3>{{ stock.symbol }}</h3>
+                    <h3>{{ monitor.symbol }}</h3>
                     <div class="monitor-info">
                         <div class="info-left">
                             <div>
-                                <label for="upper-{{ stock.symbol }}">Upper:</label>
-                                <input type="text" id="upper-{{ stock.symbol }}" value="{{ stock.supLimit }}" readonly>
-                            </div>
+                                <label for="upper-{{ monitor.symbol }}">Upper:</label>
+                                <input type="text" id="upper-{{ monitor.symbol }}" value="{{ monitor.supLimit }}" readonly>                            </div>
                             <div>
-                                <label for="bottom-{{ stock.symbol }}">Bottom:</label>
-                                <input type="text" id="bottom-{{ stock.symbol }}" value="{{ stock.botLimit }}" readonly>
+                                <label for="bottom-{{ monitor.symbol }}">Bottom:</label>
+                                <input type="text" id="bottom-{{ monitor.symbol }}" value="{{ monitor.botLimit }}" readonly>                            </div>
                             </div>
-                        </div>
                         <div class="info-right">
-                            <span id="{{ stock.symbol }}-icon" class="edit-icon" onclick="toggleEditMonitor('{{ stock.symbol }}')">✎</span>
-                            <span class="delete-icon" onclick="deleteMonitor('{{ stock.symbol }}')">🗑️</span>
+                            <span id="{{ monitor.symbol }}-icon" class="edit-icon" onclick="toggleEditMonitor('{{ monitor.symbol }}')">✎</span>
+                            <span class="delete-icon" onclick="deleteMonitor('{{ monitor.symbol }}')">🗑️</span>
                         </div>
                     </div>
                 </div>
@@ -107,13 +105,13 @@
             <div class="fixed-field">
                 <label for="monitoringPeriod">Monitoring Period:</label>
                 <select id="monitoringPeriod" name="monitoringPeriod" disabled>
-                    <option value="1m" {% if profile.monitoring_period == '1m' %}selected{% endif %}>1m</option>
-                    <option value="2m" {% if profile.monitoring_period == '2m' %}selected{% endif %}>2m</option>
-                    <option value="5m" {% if profile.monitoring_period == '5m' %}selected{% endif %}>5m</option>
-                    <option value="15m" {% if profile.monitoring_period == '15m' %}selected{% endif %}>15m</option>
-                    <option value="30m" {% if profile.monitoring_period == '30m' %}selected{% endif %}>30m</option>
-                    <option value="60m" {% if profile.monitoring_period == '60m' %}selected{% endif %}>60m</option>
-                    <option value="90m" {% if profile.monitoring_period == '90m' %}selected{% endif %}>90m</option>
+                    <option value="1m" {% if profile.monitoring_period == 1 %}selected{% endif %}>1m</option>
+                    <option value="2m" {% if profile.monitoring_period == 2 %}selected{% endif %}>2m</option>
+                    <option value="5m" {% if profile.monitoring_period == 5 %}selected{% endif %}>5m</option>
+                    <option value="15m" {% if profile.monitoring_period == 15 %}selected{% endif %}>15m</option>
+                    <option value="30m" {% if profile.monitoring_period == 30 %}selected{% endif %}>30m</option>
+                    <option value="60m" {% if profile.monitoring_period == 60 %}selected{% endif %}>60m</option>
+                    <option value="90m" {% if profile.monitoring_period == 90 %}selected{% endif %}>90m</option>
                 </select>
                 <button type="button" class="edit-button" onclick="toggleMonitoringPeriodEdit()">
                     <span id="monitoringPeriod-icon">✎</span>

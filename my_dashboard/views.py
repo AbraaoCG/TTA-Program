@@ -99,18 +99,18 @@ def setMonitor(request):
     if request.method == 'POST':
         # Obter dados do POST e do usuário.
         data = json.loads(request.body)
-        ticker = request.session.get('selected_ticker')
+        symbol = data.get('symbol').replace('.SA', '')  # Remover '.SA' do ticker
         # Obter os limites superior e inferior, usando casting para float.  
         supLimit = float(data.get('upper'))
         botLimit = float(data.get('bottom'))
         profile = Profile.objects.get(user=request.user)
         
         # Verificar se o ticker já está sendo monitorado
-        if profile.stockmonitor_set.filter(symbol=ticker).exists():
+        if profile.stockmonitor_set.filter(symbol=symbol).exists():
             return JsonResponse({'success': False, 'error': 'Ticker already being monitored'})
         
         # Criar um novo monitor de ações
-        monitor = profile.stockmonitor_set.create(symbol=ticker, supLimit=supLimit, botLimit=botLimit)
+        monitor = profile.stockmonitor_set.create(symbol=symbol, supLimit=supLimit, botLimit=botLimit)
         monitor.save()
         
         # Retornar uma resposta de sucesso
@@ -134,13 +134,16 @@ def get_stock_monitors(request):
 # Função para atualizar um monitor de uma ação.
 def update_monitor(request):
     if request.method == 'POST':
-        data = request.POST
-        upper_limit = data.get('upper')
-        bottom_limit = data.get('bottom')
+        data = json.loads(request.body)
+        upper_limit = float(data.get('upper').replace(',', '.'))
+        bottom_limit = float(data.get('bottom').replace(',', '.'))
         symbol = data.get('symbol')
 
+        print(f'symbol : {symbol}')
+
         profile = Profile.objects.get(user=request.user)
-        monitor = get_object_or_404(StockMonitor, profile=profile, symbol=symbol)
+        print(symbol)
+        monitor = StockMonitor.objects.get(profile=profile, symbol=symbol)
         
         monitor.supLimit = upper_limit
         monitor.botLimit = bottom_limit
