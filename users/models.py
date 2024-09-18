@@ -29,6 +29,7 @@ class Record(models.Model):
     date = models.DateTimeField(default = datetime.datetime.now)
     stockValue = models.FloatField()
     stockMonitor = models.ForeignKey(StockMonitor, on_delete=models.CASCADE)
+    alert = models.BooleanField(default=False)
     # Adicione outros campos conforme necessário
 
 

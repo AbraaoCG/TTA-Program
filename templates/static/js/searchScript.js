@@ -35,20 +35,20 @@ function fetchStockData(ticker) {
         .catch(error => console.error('Erro:', error));
 }
 
-// Função para renderizar o gráfico
-function loadGraph() {
-    const graphData = JSON.parse('{{ graph|safe }}');
-    if (graphData) {
-        Plotly.newPlot('graph-container', graphData.data, graphData.layout);
-    } else {
-        fetch('/fetch-token-data/')
-            .then(response => response.json())
-            .then(data => {
-                if (data.graph) {
-                    Plotly.newPlot('graph-container', JSON.parse(data.graph).data, JSON.parse(data.graph).layout);
-                } else {
-                    console.error('Erro ao buscar dados da ação:', data.error);
-                }
-            });
-    }
-}
+// // Função para renderizar o gráfico
+// function loadGraph() {
+//     const graphData = JSON.parse('{{ graph|safe }}');
+//     if (graphData) {
+//         Plotly.newPlot('graph-container', graphData.data, graphData.layout);
+//     } else {
+//         fetch('/fetch-token-data/')
+//             .then(response => response.json())
+//             .then(data => {
+//                 if (data.graph) {
+//                     Plotly.newPlot('graph-container', JSON.parse(data.graph).data, JSON.parse(data.graph).layout);
+//                 } else {
+//                     console.error('Erro ao buscar dados da ação:', data.error);
+//                 }
+//             });
+//     }
+// }

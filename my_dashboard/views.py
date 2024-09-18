@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from .models import StockSymbol  # Importe seu modelo de símbolo de ações
-from users.models import Profile, StockMonitor  # Importe seu modelo de perfil e monitor de ações
+from users.models import Profile, StockMonitor, Record  # Importe seu modelo de perfil e monitor de ações
 
 import plotly.express as px
 import plotly.graph_objects as go
@@ -170,3 +170,52 @@ def delete_monitor(request):
             return JsonResponse({'success': False, 'error': 'Monitor not found'})
     else:
         return JsonResponse({'success': False, 'error': 'Invalid request method'})
+
+
+
+@login_required(login_url='/auth/login/')
+def get_monitor_history(request, symbol):
+    # Obter o monitor de ações do usuário e lista ordenada de aquisições.
+    monitor = StockMonitor.objects.get(symbol=symbol, profile=request.user.profile)
+    records = Record.objects.filter(stockMonitor=monitor).order_by('date')
+    if not records.exists():
+        return JsonResponse({'graph': None})
+        
+    # Construir o DataFrame com os dados dos registros
+    data = pd.DataFrame(list(records.values('date', 'stockValue', 'alert')))
+    data['date'] = pd.to_datetime(data['date'])
+    data.set_index('date', inplace=True)
+    
+    # Gera o gráfico com os dados obtidos
+    graph_json = getScatterGraph(data, title=f'{symbol} - Stock Monitor History', upperLimit=monitor.supLimit, bottomLimit=monitor.botLimit)
+    
+    # Retorna o gráfico como JSON
+    return JsonResponse({
+        'graph': graph_json,
+    })
+
+
+def getScatterGraph(data, title, upperLimit, bottomLimit):
+    if data.empty:
+        fig = go.Figure()  # Gráfico vazio
+    else:
+        alert_data = data[data['alert']]
+        fig = go.Figure()
+        fig.add_trace(go.Scatter(x=data.index, y=data['stockValue'], mode='lines', name='Stock Price'))
+        fig.add_trace(go.Scatter(x=alert_data.index, y=alert_data['stockValue'], mode='markers', name='Alert', marker=dict(color='red')))
+        fig.add_shape(type='line', x0=data.index.min(), y0=upperLimit, x1=data.index.max(), y1=upperLimit, line=dict(color='gray', width=1, dash='dash'), name='Upper Limit')
+        fig.add_shape(type='line', x0=data.index.min(), y0=bottomLimit, x1=data.index.max(), y1=bottomLimit, line=dict(color='gray', width=1, dash='dash'), name='Bottom Limit')
+    
+    fig.update_layout(
+        paper_bgcolor='rgba(0,0,0,0)',
+        plot_bgcolor='rgba(0,0,0,0)',
+        font_color='rgba(0,0,0,1)',  # Preto para o texto
+        title_font_size=24,            # Tamanho da fonte do título
+        xaxis_title_font_size=18,      # Tamanho da fonte do título do eixo x
+        yaxis_title_font_size=18,      # Tamanho da fonte do título do eixo y
+        xaxis_tickfont_size=16,        # Tamanho da fonte dos rótulos do eixo x
+        yaxis_tickfont_size=16,        # Tamanho da fonte dos rótulos do eixo y
+        legend_font_size=14,           # Tamanho da fonte da legenda
+    )
+    fig.update_yaxes(showspikes=True,spikesnap="cursor")
+    return pio.to_json(fig)

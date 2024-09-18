@@ -67,6 +67,10 @@
                             <span class="delete-icon" onclick="deleteMonitor('{{ monitor.symbol }}')">🗑️</span>
                         </div>
                     </div>
+                    <div class="monitor-history">
+                        <!-- Botão de histórico -->
+                        <button class="history-btn" onclick="loadMonitorHistory('{{ monitor.symbol }}')">History</button>
+                    </div>
                 </div>
                 {% endfor %}
             </div>

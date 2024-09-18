@@ -17,20 +17,25 @@ def wake_up_monitor_task(symbol, profile_id):
         [latest_value,latest_data] = get_current_price(symbol_yf, num_records= 30, minutes_interval=period)
         # Verificar Tunel.
         print(f'{symbol} ::: {monitor.supLimit} , {monitor.botLimit} ')
+        alertFlag = False
         if latest_value > monitor.supLimit: # Recomendação de venda
             # Enviar email
             send_email_to_user(profile.user.email, symbol, latest_value, monitor.supLimit, False)
+            alertFlag = True
 
         elif latest_value < monitor.botLimit: # Recomendação de compra
             # Enviar email
             send_email_to_user(profile.user.email, symbol, latest_value, monitor.botLimit, True)
+            alertFlag = True
 
         # Registrar o valor
         Record.objects.create(
             stockMonitor=monitor,
             stockValue=latest_value,
-            date=latest_data
+            date=latest_data,
+            alert=alertFlag
         )
+        
     except StockMonitor.DoesNotExist:
         print(f"Nenhum monitor encontrado para o símbolo {symbol} e perfil com ID {profile_id}.")
     except Profile.DoesNotExist:

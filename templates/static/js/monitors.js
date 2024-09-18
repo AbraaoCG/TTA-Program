@@ -59,6 +59,10 @@ function reloadStockMonitors() {
                             <span class="delete-icon" onclick="deleteMonitor('${monitor.symbol}')">🗑️</span>
                         </div>
                     </div>
+                    <div class="monitor-history">
+                        <!-- Botão de histórico -->
+                        <button class="history-btn" onclick="loadMonitorHistory('${monitor.symbol}')">History</button>
+                    </div>
                 `;
                 container.appendChild(monitorBlock);
             });
@@ -144,4 +148,20 @@ function deleteMonitor(symbol) {
             alert('Failed to delete monitor');
         }
     });
+}
+
+function loadMonitorHistory(symbol) {
+    fetch(`/dashboard/get-monitor-history/${symbol}/`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.graph) {
+                var graphData = JSON.parse(data.graph);
+                Plotly.newPlot('graph-container', graphData.data, graphData.layout);
+            } else {
+                console.error('Erro ao buscar dados da ação:', data.error);
+                alert('There is no history for this monitor');
+            }
+        })
+        .catch(error => console.error('Erro:', error));
+
 }

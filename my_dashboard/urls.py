@@ -16,4 +16,6 @@ urlpatterns = [
     path('get-stock-monitors/', get_stock_monitors, name='get_stock_monitors'),
     path('update-monitor/', update_monitor, name='update_monitor'),
     path('delete-monitor/', delete_monitor, name='delete_monitor'),
+    path('get-monitor-history/<str:symbol>/', views.get_monitor_history, name='get-monitor-history'),
+
 ]

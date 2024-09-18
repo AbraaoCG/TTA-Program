@@ -251,7 +251,7 @@ body {
 /* Estilo de cada bloco de StockMonitor */
 .stock-monitor-block {
     min-width: 200px;            /* Largura mínima para cada bloco */
-    height: 100px;               /* Altura dos blocos */
+    height: 40%;               /* Altura dos blocos */
     background-color:rgba(0, 0, 0, 0.1);   /* Fundo cinza escuro */
     border-radius: 10px;         /* Bordas arredondadas */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra para destaque */
@@ -341,4 +341,19 @@ body {
         background-position: 0% 0%;
         filter: brightness(1);
     }
+}
+
+.history-btn {
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.history-btn:hover {
+    background-color: #333;
 }
