@@ -43,9 +43,14 @@ def register_user(request):
         user.save()
 
         # Cria e inicializa o perfil do usuário
-        profile = Profile.objects.create(user=user)
-        profile.monitoring_period = 5  # Por exemplo, definir um período de verificação padrão
-        profile.save()
+        try:
+            profile = Profile.objects.create(user=user)
+            profile.monitoring_period = 5  # Por exemplo, definir um período de verificação padrão
+            profile.save()
+        except Exception as e:
+            user.delete()
+            print(f"Erro ao criar o perfil do usuário: {e}")
+            return HttpResponse('Erro ao criar o perfil do usuário.')
         return redirect('login')
 
 
@@ -112,27 +117,67 @@ def update_monitoring_period(request):
         # Atualizar o intervalo de todas as tarefas periódicas associadas aos monitores do perfil
         stock_monitors = StockMonitor.objects.filter(profile=profile)
         for monitor in stock_monitors:
-            update_periodic_task_for_monitor(monitor)
+            update_periodic_task_for_monitor(monitor, profile)
         
         return JsonResponse({'success': True})
 
-def update_periodic_task_for_monitor(monitor):
+def update_periodic_task_for_monitor(monitor, profile):
     print(f"Updating periodic task for {monitor.symbol} and profile {monitor.profile.id}")
     # Cria ou atualiza o intervalo para o monitor
     schedule, created = IntervalSchedule.objects.get_or_create(
-        every=monitor.profile.monitoring_period,
+        every = profile.monitoring_period,
         period=IntervalSchedule.MINUTES
     )
-    print(f'period: {monitor.profile.monitoring_period}')
+
+    print(f'period: {profile.monitoring_period}')
+
     task_name = f"wake_up_monitor_{monitor.symbol}_{monitor.profile.id}"
+    
+    task = PeriodicTask.objects.filter(name=task_name).first()
 
-    # Remove a tarefa existente se existir
-    PeriodicTask.objects.filter(name=task_name).delete()
-
-    # Cria uma nova tarefa periódica, passando o símbolo e o ID do perfil como argumentos
-    PeriodicTask.objects.create(
+    if(task is not None):
+        task.interval = schedule
+        task.save()
+    else:
+        PeriodicTask.objects.create(
         interval=schedule,
         name=task_name,
         task='users.tasks.wake_up_monitor_task',
         args=json.dumps([monitor.symbol, monitor.profile.id])  # Passa o symbol e o user_id
-    )
+        )
+    # # Remove a tarefa existente se existir
+    # PeriodicTask.objects.filter(name=task_name).delete()
+
+    # Cria uma nova tarefa periódica, passando o símbolo e o ID do perfil como argumentos
+    
+
+
+# def create_periodic_task_for_monitor(monitor,profile):
+#     print(f"Updating periodic task for {monitor.symbol} and profile {monitor.profile.id}")
+#     # Cria ou atualiza o intervalo para o monitor
+#     schedule, created = IntervalSchedule.objects.get_or_create(
+#         every = profile.monitoring_period,
+#         period=IntervalSchedule.MINUTES
+#     )
+
+#     print(f'period: {profile.monitoring_period}')
+
+#     task_name = f"wake_up_monitor_{monitor.symbol}_{monitor.profile.id}"
+    
+#     task = PeriodicTask.objects.get(name=task_name)
+#     print(task)
+#     if(task is not None):
+#         task.interval = schedule
+#         task.save()
+#     else:
+#         PeriodicTask.objects.create(
+#         interval=schedule,
+#         name=task_name,
+#         task='users.tasks.wake_up_monitor_task',
+#         args=json.dumps([monitor.symbol, monitor.profile.id])  # Passa o symbol e o user_id
+#         )
+#     # # Remove a tarefa existente se existir
+#     # PeriodicTask.objects.filter(name=task_name).delete()
+
+#     # Cria uma nova tarefa periódica, passando o símbolo e o ID do perfil como argumentos
+    

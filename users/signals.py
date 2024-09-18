@@ -7,7 +7,7 @@ from users.views import update_periodic_task_for_monitor
 
 @receiver(post_save, sender=StockMonitor)
 def update_periodic_task(sender, instance, **kwargs):
-    update_periodic_task_for_monitor(instance)
+    update_periodic_task_for_monitor(instance, profile=instance.profile)
 
 
 @receiver(post_delete, sender=StockMonitor)
