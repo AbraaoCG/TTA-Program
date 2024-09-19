@@ -6,3 +6,4 @@ pandas
 redis
 requests
 yfinance
+plotly
